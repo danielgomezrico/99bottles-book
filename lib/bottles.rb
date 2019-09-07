@@ -2,26 +2,25 @@ class Bottles
 
 	def verse(number)
 		next_number = calculate_next_number(number)
-		takes = number == 1 ? "it" : "one" 
 
 <<-VERSE
-#{calculate_number_text(number)} of beer on the wall, #{calculate_number_text(number)} of beer.
-Take #{takes} down and pass it around, #{calculate_number_text(next_number)} of beer on the wall.
+#{calculate_number_text(number).capitalize} of beer on the wall, #{calculate_number_text(number)} of beer.
+#{calculate_second_sense(number)}, #{calculate_number_text(next_number)} of beer on the wall.
 VERSE
 	end
 
-	def verses(first_number, second_number)
-<<-VERSES
-#{verse(first_number)}
-#{verse(second_number)}
-VERSES
+	def verses(top_number, bottom_number)
+		total = []
+
+		top_number.downto(bottom_number) do |number|
+			total << verse(number)
+		end
+
+		total.join("\n")
 	end
 
 	def song
-		total = ""
-		(99..0).each do |number|
-			total = "#{total}#{verse(first_number)}\n\n"
-		end	
+		verses(99, 0)
 	end
 
 	def calculate_next_number(count)
@@ -43,6 +42,15 @@ VERSES
 			"1 bottle"
 		else
 			"#{count} bottles"
+		end
+	end
+
+	def calculate_second_sense(count)
+		if count == 0
+			"Go to the store and buy some more"
+		else
+			it = count == 1 ? "it" : "one" 
+			"Take #{it} down and pass it around"
 		end
 	end
 end
